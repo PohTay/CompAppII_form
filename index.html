@@ -58,11 +58,18 @@
                 I agree to the <a href="#">terms and conditions</a>
             </label>
         </p>
+        
         <p>
             <button type="button" onclick="saveFile()">
                 Sign up
             </button>
         </p>
+        
+        <div style="font-size: 14px; color: #333; margin-top: 10px;">
+            <b>ชื่อ:</b> นายศิวัช โพธิมากูล <br>
+            <b>รหัสนักศึกษา:</b> 6704053612244
+        </div>
+
     </form>
 
     <script>
@@ -71,7 +78,6 @@
         }
 
         let saveFile = () => {
-            
             const firstName = document.getElementById('firstName').value.trim();
             const lastName = document.getElementById('lastName').value.trim();
             const email = document.getElementById('email').value.trim();
@@ -80,7 +86,6 @@
             const confirmPassword = document.getElementById('confirmPassword').value;
             const country = document.getElementById('country').value;
             const termsChecked = document.getElementById('terms').checked;
-
 
             if (firstName === "" || lastName === "" || email === "" || phone === "" || password === "" || confirmPassword === "") {
                 alert("กรุณากรอกข้อมูลให้ครบทุกช่อง (Please fill in all fields)");
