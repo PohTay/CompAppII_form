@@ -1,1 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+</head>
+<body>
 
+    <h2>Sign Up Form</h2>
+    <form id="registForm">
+        <p>
+            <label>Title</label>
+            <label><input type="radio" name="title" value="Mr" checked> Mr</label>
+            <label><input type="radio" name="title" value="Mrs"> Mrs</label>
+            <label><input type="radio" name="title" value="Miss"> Miss</label>
+        </p>
+        <p>
+            <label>First name</label>
+            <input type="text" id="firstName">
+        </p>
+        <p>
+            <label>Last name</label>
+            <input type="text" id="lastName">
+        </p>
+        <p>
+            <label>Email</label>
+            <input type="email" id="email" placeholder="example@mail.com">
+        </p>
+        <p>
+            <label>Phone number</label>
+            <input type="tel" id="phone" inputmode="numeric" oninput="onlyNumbers(this)" placeholder="Ex. 0812345678">
+        </p>
+        <p>
+            <label>Password</label>
+            <input type="password" id="password">
+        </p>
+        <p>
+            <label>Confirm your password</label>
+            <input type="password" id="confirmPassword">
+        </p>
+        <p>
+            <label>Country</label>
+            <select id="country">
+                <option>Canada</option>
+                <option>France</option>
+                <option>Germany</option>
+                <option>Italy</option>
+                <option>Japan</option>
+                <option>Russia</option>
+                <option>United Kingdom</option>
+                <option>United States</option>
+            </select>
+        </p>
+        <p>
+            <label>
+                <input type="checkbox" id="terms">
+                I agree to the <a href="#">terms and conditions</a>
+            </label>
+        </p>
+        <p>
+            <button type="button" onclick="saveFile()">
+                Sign up
+            </button>
+        </p>
+    </form>
+
+    <script>
+        function onlyNumbers(input) {
+            input.value = input.value.replace(/[^0-9]/g, '');
+        }
+
+        let saveFile = () => {
+            
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const country = document.getElementById('country').value;
+            const termsChecked = document.getElementById('terms').checked;
+
+
+            if (firstName === "" || lastName === "" || email === "" || phone === "" || password === "" || confirmPassword === "") {
+                alert("กรุณากรอกข้อมูลให้ครบทุกช่อง (Please fill in all fields)");
+                return;
+            }
+
+            if (!email.includes('@')) {
+                alert("รูปแบบอีเมลไม่ถูกต้อง ต้องมีเครื่องหมาย '@' (Invalid email format)");
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                alert("รหัสผ่านไม่ตรงกัน (Passwords do not match)");
+                return;
+            }
+
+            if (!termsChecked) {
+                alert("กรุณากดยอมรับเงื่อนไข (Please agree to the terms)");
+                return;
+            }
+
+            const titleElement = document.querySelector('input[name="title"]:checked');
+            const title = titleElement ? titleElement.value : '';
+            const termsValue = termsChecked ? 'Accepted' : 'Not Accepted';
+
+            let data = 
+                `Title: ${title} \r\n` + 
+                `Name: ${firstName} ${lastName} \r\n` + 
+                `Email: ${email} \r\n` + 
+                `Phone: ${phone} \r\n` + 
+                `Password: ${password} \r\n` + 
+                `Country: ${country} \r\n` + 
+                `Terms: ${termsValue}`;
+            
+            const textToBLOB = new Blob([data], { type: 'text/plain' });
+            const sFileName = 'userData.txt';
+
+            let newLink = document.createElement("a");
+            newLink.download = sFileName;
+
+            if (window.webkitURL != null) {
+                newLink.href = window.webkitURL.createObjectURL(textToBLOB);
+            }
+            else {
+                newLink.href = window.URL.createObjectURL(textToBLOB);
+                newLink.style.display = "none";
+                document.body.appendChild(newLink);
+            }
+
+            newLink.click(); 
+        }
+    </script>
+</body>
+</html>
